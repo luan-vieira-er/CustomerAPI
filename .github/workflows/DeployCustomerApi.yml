@@ -11,6 +11,9 @@ env:
   AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
   ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
   ECS_BACKEND_SERVICE: ${{ vars.ECS_BACKEND_SERVICE }}
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read 
 jobs:
   deploy:
     runs-on: ubuntu-latest
