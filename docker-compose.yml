@@ -11,6 +11,6 @@ services:
     environment:
       NODE_ENV: production
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - .:/src/app
+      - /src/app/node_modules
     command: npm run start:prod
