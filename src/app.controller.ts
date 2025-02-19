@@ -7,6 +7,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return "Teste Deploy Actions from GitHub!";
+    return "Hello World!";
   }
 }
