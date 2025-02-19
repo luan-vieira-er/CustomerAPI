@@ -43,7 +43,6 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          cd backend
           docker buildx create --use
           docker buildx inspect --bootstrap
           docker buildx build --platform linux/arm64 \
