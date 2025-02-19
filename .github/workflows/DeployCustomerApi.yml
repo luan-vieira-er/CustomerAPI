@@ -1,6 +1,17 @@
 name: Build and Deploy CustomerApi to ECS
 
 on:
+  workflow_call: # allows calling this workflow from another workflow
+  inputs:
+      ECR_BACKEND_IMAGE: { required: true, type: string }
+      AWS_DEFAULT_REGION: { required: true, type: string }
+      ECS_CLUSTER: { required: true, type: string }
+      ECS_BACKEND_SERVICE: { required: true, type: string }
+  secrets:
+    AWS_ACCESS_KEY_ID: { required: true }
+    AWS_SECRET_ACCESS_KEY: { required: true }
+
+on:
   push:
     branches:
       - main
