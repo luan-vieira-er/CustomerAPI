@@ -1,47 +1,59 @@
 name: Build and Deploy CustomerApi to ECS
 
 on:
-  workflow_call: # allows calling this workflow from another workflow
+  workflow_call:
     inputs:
-      ECR_BACKEND_IMAGE: { required: true, type: string }
-      AWS_DEFAULT_REGION: { required: true, type: string }
-      ECS_CLUSTER: { required: true, type: string }
-      ECS_BACKEND_SERVICE: { required: true, type: string }
+      ECR_BACKEND_IMAGE: 
+        required: true
+        type: string
+      AWS_DEFAULT_REGION: 
+        required: true
+        type: string
+      ECS_CLUSTER: 
+        required: true
+        type: string
+      ECS_BACKEND_SERVICE: 
+        required: true
+        type: string
     secrets:
-      AWS_ACCESS_KEY_ID: { required: true }
-      AWS_SECRET_ACCESS_KEY: { required: true }
+      AWS_ACCESS_KEY_ID: 
+        required: true
+      AWS_SECRET_ACCESS_KEY: 
+        required: true
+      AWS_ACCOUNT_ID: 
+        required: true
   push:
     branches:
       - main
 
 env:
-  # Setting an environment variable with the value of a configuration variable
-  ECR_BACKEND_IMAGE: ${{ vars.ECR_BACKEND_IMAGE }}
-  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
-  ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
-  ECS_BACKEND_SERVICE: ${{ vars.ECS_BACKEND_SERVICE }}
+  ECR_BACKEND_IMAGE: ${{ inputs.ECR_BACKEND_IMAGE }}
+  AWS_DEFAULT_REGION: ${{ inputs.AWS_DEFAULT_REGION }}
+  ECS_CLUSTER: ${{ inputs.ECS_CLUSTER }}
+  ECS_BACKEND_SERVICE: ${{ inputs.ECS_BACKEND_SERVICE }}
+
 permissions:
-  id-token: write   # This is required for requesting the JWT
-  contents: read 
+  id-token: write
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up QEMU for arm64
+        if: runner.os == 'Linux'
         run: |
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-        if: runner.os == 'Linux'
 
       - name: Set up Docker for arm64
         uses: docker/setup-qemu-action@v2
         with:
           platforms: linux/arm64
 
-      - name: Set up Docker
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Configure AWS credentials
@@ -49,7 +61,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
 
       - name: Login to Amazon ECR
         run: |
@@ -60,13 +72,5 @@ jobs:
           cd backend
           docker buildx create --use
           docker buildx inspect --bootstrap
-          docker buildx build --platform linux/arm64 -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_BACKEND_IMAGE:latest --push .
-
-      - name: Deploy to ECS
-        uses: imehedi/actions-awscli-v2@latest
-        with:
-          args: ecs update-service --cluster tof-cluster --service customerapi --force-new-deployment
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "us-west-2"
+          docker buildx build --platform linux/arm64 \
+            -t ${{ secret
