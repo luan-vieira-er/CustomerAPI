@@ -1,27 +1,6 @@
 name: Build and Deploy CustomerApi to ECS
 
 on:
-  workflow_call:
-    inputs:
-      ECR_BACKEND_IMAGE: 
-        required: true
-        type: string
-      AWS_DEFAULT_REGION: 
-        required: true
-        type: string
-      ECS_CLUSTER: 
-        required: true
-        type: string
-      ECS_BACKEND_SERVICE: 
-        required: true
-        type: string
-    secrets:
-      AWS_ACCESS_KEY_ID: 
-        required: true
-      AWS_SECRET_ACCESS_KEY: 
-        required: true
-      AWS_ACCOUNT_ID: 
-        required: true
   push:
     branches:
       - main
@@ -38,11 +17,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up QEMU for arm64
-        env:
-          AWS_DEFAULT_REGION: ${{ inputs.AWS_DEFAULT_REGION }}
         if: runner.os == 'Linux'
         run: |
-          echo ${{ inputs.AWS_DEFAULT_REGION }}
+          echo ${{ vars.AWS_DEFAULT_REGION }}
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
       - name: Set up Docker for arm64
@@ -58,7 +35,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ inputs.AWS_DEFAULT_REGION }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
 
       - name: Login to Amazon ECR
         run: |
@@ -76,8 +53,8 @@ jobs:
       - name: Deploy to ECS
         uses: imehedi/actions-awscli-v2@latest
         with:
-          args: ecs update-service --cluster ${{ inputs.ECS_CLUSTER }} --service ${{ inputs.ECS_BACKEND_SERVICE }} --force-new-deployment
+          args: ecs update-service --cluster ${{ vars.ECS_CLUSTER }} --service ${{ vars.ECS_BACKEND_SERVICE }} --force-new-deployment
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ inputs.AWS_DEFAULT_REGION }}
+          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
