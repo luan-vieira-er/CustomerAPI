@@ -21,7 +21,7 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: '*',
+    origin: ['http://localhost:3000', 'https://dmx616r1r0n7b.cloudfront.net/'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH','OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
