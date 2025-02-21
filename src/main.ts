@@ -20,6 +20,9 @@ async function bootstrap() {
     }),
   });
 
+  app.setGlobalPrefix('api/v1');
+  app.enableCors();
+
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (validationErrors: ValidationError[] = []) => {

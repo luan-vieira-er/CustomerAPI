@@ -15,6 +15,9 @@ export class Customer {
     @Column({ type: "double precision" })
     company_value: number
 
+    @Column({ default: false })
+    selected: boolean
+
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     public created_at: Date;
 

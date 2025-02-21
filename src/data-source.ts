@@ -22,4 +22,4 @@ export const AppDataSource = new DataSource({
     }
 })
     
-export const clientRepository = AppDataSource.getRepository(Customer)
+export const customerRepository = AppDataSource.getRepository(Customer)

@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { CustomersService } from './customers.service';
-import { CreateClientDto } from './dto/create-customer.dto';
-import { UpdateClientDto } from './dto/update-customer.dto';
+import { CreateCustomerDto } from './dto/create-customer.dto';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { ApiTags, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { SelectCustomerDto } from './dto/select-customer.dto';
 
 @ApiTags('customers')
 @Controller('customers')
@@ -12,16 +13,17 @@ export class CustomersController {
   @Post()
   @ApiResponse({ status: 201, description: 'The customer has been successfully created.'})
   @ApiResponse({ status: 403, description: 'Forbidden.'})
-  create(@Body() createClientDto: CreateClientDto) {
-    return this.customersService.create(createClientDto);
+  create(@Body() createCustomerDto: CreateCustomerDto) {
+    return this.customersService.create(createCustomerDto);
   }
 
   @Get()
   @ApiResponse({ status: 200, description: 'The customers have been successfully loaded.'})
   @ApiResponse({ status: 403, description: 'Forbidden.'})
   @ApiQuery({ name: 'fullname', required: false })
-  findAll(@Query('fullname') fullname: string, @Query('take') take: number, @Query('skip') skip: number) {
-    return this.customersService.findAll(take, skip, fullname);
+  @ApiQuery({ name: 'selected', required: false })
+  findAll(@Query('fullname') fullname: string, @Query('selected') selected: boolean, @Query('take') take: number, @Query('skip') skip: number) {
+    return this.customersService.findAll(fullname, selected, take, skip );
   }
 
   @Get(':id')
@@ -32,8 +34,13 @@ export class CustomersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
-    return this.customersService.update(id, updateClientDto);
+  update(@Param('id') id: string, @Body() updateCustomerDto: UpdateCustomerDto) {
+    return this.customersService.update(id, updateCustomerDto);
+  }
+
+  @Patch(':id/select')
+  select(@Param('id') id: string, @Body() selectCustomerDto: SelectCustomerDto) {
+    return this.customersService.select(id, selectCustomerDto);
   }
 
   @Delete(':id')
