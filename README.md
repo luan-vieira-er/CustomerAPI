@@ -1,6 +1,6 @@
 # Backend do Sistema de Gerenciamento de Clientes
 
-Acesse aqui: [Customer Portal](https://dmx616r1r0n7b.cloudfront.net/)
+Acesse aqui: [Customer Portal](https://dmx616r1r0n7b.cloudfront.net/) ou [Veja o vídeo de utilização](https://youtu.be/5wfcGZdMccQ)
 
 Este repositório contém o backend do sistema de gerenciamento de clientes desenvolvido com NestJS. A aplicação oferece endpoints para cadastro, listagem, atualização, exclusão e visualização dos clientes. A seguir, você encontrará informações sobre como configurar, executar e implantar a aplicação.
 
@@ -84,6 +84,12 @@ O deploy deste projeto é automatizado através do **GitHub Actions**. Sempre qu
 **AWS RDS:** O banco de dados PostgreSQL é gerenciado pelo AWS RDS, garantindo alta disponibilidade e escalabilidade.
 **Load Balancer:** O tráfego é distribuído por meio de um Load Balancer, garantindo performance e balanceamento de carga adequado.
 
+## Próximos Passos
+Considerando o prazo e a complexidade, optei por entregar um produto funcional.
+Além do frontend, nosso backend também tem alguns pontos que podem ser melhorados no futuro:
+- Autenticação, se necessário.
+- Implementação de testes unitários com o Nest.
+- Aprimoramento no tratamento de erros.
 
 ## Desenvolvimento de painel administrativo
 Tomando como base os 3 dias que precisei para desenvolver o projeto, podemos fazer as seguintes estimativas para o desenvolvimento do painel administrativo:
