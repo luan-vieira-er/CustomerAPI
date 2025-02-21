@@ -8,6 +8,7 @@ Este repositório contém o backend do sistema de gerenciamento de clientes dese
 
 - **NestJS** – Framework Node.js para construir aplicações escaláveis e eficientes.
 - **PostgreSQL** – Banco de dados relacional utilizado para armazenamento dos dados.
+- **TypeORM** – Biblioteca para gerenciar e abstrair operações em bancos de dados do tipo SQL.
 - **AWS ECS & ECR** – Containerização e orquestração na AWS.
 - **AWS RDS** – Serviço gerenciado de banco de dados.
 - **AWS Load Balancer** – Distribuição de carga e gerenciamento de tráfego.
@@ -53,8 +54,8 @@ Essas variáveis e segredos estão salvos na definição da tarefa do ECS.
 ## Clone o repositório:
 
 ```
-git clone https://seu-repositorio.git
-cd nome-do-repositorio
+git clone https://github.com/luan-vieira-er/CustomerAPI.git
+cd CustomerAPI
 Instale as dependências:
 ```
 
@@ -68,7 +69,7 @@ Com as variáveis de ambiente configuradas, inicie a aplicação:
 npm run start:dev
 ```
 
-A aplicação ficará disponível no endereço configurado (por padrão, http://localhost:3000).
+A aplicação ficará disponível no endereço configurado (por padrão, http://localhost:3000). Caso queira testar com o Docker, basta utilizar o docker-compose.
 
 ## Deploy
 O deploy deste projeto é automatizado através do **GitHub Actions**. Sempre que houver um push para a branch principal (ou outra branch configurada), o pipeline realizará as seguintes etapas:

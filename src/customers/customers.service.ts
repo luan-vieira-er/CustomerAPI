@@ -65,7 +65,6 @@ export class CustomersService {
   async remove(id: string) {
     console.log("Removing a customer... " + id)
     const customer = await customerRepository.delete({ id: id })
-    console.log("🚀 ~ CustomersService ~ remove ~ customer:", customer)
     return customer;
   }
 }
