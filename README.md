@@ -1,5 +1,7 @@
 # Backend do Sistema de Gerenciamento de Clientes
 
+Acesse aqui: [Customer Portal](https://dmx616r1r0n7b.cloudfront.net/)
+
 Este repositório contém o backend do sistema de gerenciamento de clientes desenvolvido com NestJS. A aplicação oferece endpoints para cadastro, listagem, atualização, exclusão e visualização dos clientes. A seguir, você encontrará informações sobre como configurar, executar e implantar a aplicação.
 
 ## Tecnologias Utilizadas
